@@ -812,8 +812,10 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
 		// Add facets activated by query parameters.
 		if (array_key_exists('facet', $arguments)) {
-			foreach ($arguments['facet'] as $facetID => $facetSelection) {
-				$this->setActiveFacetSelectionForID($activeFacets, $facetID, $facetSelection);
+			if(is_iterable($arguments['facet'] )) {
+				foreach ($arguments['facet'] as $facetID => $facetSelection) {
+					$this->setActiveFacetSelectionForID($activeFacets, $facetID, $facetSelection);
+				}
 			}
 		}
 		return $activeFacets;
@@ -831,15 +833,17 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	private function setActiveFacetSelectionForID (&$activeFacets, $facetID, $facetSelection) {
 		$facetQueries = array();
 		$facetConfig = $this->getFacetConfig($facetID);
-		foreach ($facetSelection as $facetTerm => $facetStatus) {
-			$facetInfo = array(
-				'id' => $facetID,
-				'config' => $facetConfig,
-				'term' => $facetTerm,
-				'status' => $facetStatus,
-				'query' => $this->getFacetQuery($facetConfig, $facetTerm, $facetStatus)
-			);
-			$facetQueries[$facetTerm] = $facetInfo;
+		if(is_iterable($facetSelection)) {
+			foreach ($facetSelection as $facetTerm => $facetStatus) {
+				$facetInfo = array(
+					'id' => $facetID,
+					'config' => $facetConfig,
+					'term' => $facetTerm,
+					'status' => $facetStatus,
+					'query' => $this->getFacetQuery($facetConfig, $facetTerm, $facetStatus)
+				);
+				$facetQueries[$facetTerm] = $facetInfo;
+			}
 		}
 		if (count($facetQueries) > 0) {
 			$activeFacets[$facetID] = $facetQueries;
