@@ -357,6 +357,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
 			$this->view->assignMultiple($assignments);
 			$this->view->assign('type', $exportType);
+			$this->view->assign('referer', $_SERVER['HTTP_REFERER']);
 			$this->addStandardAssignments();
 		}
 	}
