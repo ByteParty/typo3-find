@@ -13,7 +13,7 @@
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Find',
 	'description' => 'A frontend for Solr indexes',
-	'version' => '1.1.9',
+	'version' => '1.1.10',
 	'state' => 'stable',
 	'category' => 'frontend',
 	'shy' => 0,
